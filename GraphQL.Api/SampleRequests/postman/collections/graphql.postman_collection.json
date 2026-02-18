@@ -1,0 +1,46 @@
+{
+  "info": {
+    "_postman_id": "c60d470c-7c4f-480b-92f4-65294314c670",
+    "name": "graphql",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "http://localhost:5264/graphql",
+      "id": "26ed0ea7-ef67-40ec-b94d-62d6f4b26f97",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "GraphQL-Require-Preflight",
+            "value": "true",
+            "type": "text",
+            "uuid": "f1644cae-5af1-4fb5-8139-e5e05ed7cf60"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query FirstGraphQLQuery{\n    menus{\n        id\n        name\n        price\n    }\n}",
+            "variables": ""
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5264/graphql",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5264",
+          "path": [
+            "graphql"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
