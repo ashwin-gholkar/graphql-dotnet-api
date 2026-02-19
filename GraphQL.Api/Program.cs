@@ -8,8 +8,10 @@ using GraphQL.Types;
 using GraphQLApi.Interfaces;
 using GraphQLApi.Services;
 using GraphQLApi.Type;
-using Microsoft.EntityFrameworkCore;
-using GraphQL.Server.Ui.Playground; 
+using Microsoft.EntityFrameworkCore; 
+using GraphQL.Api.Services;
+using GraphQL.Api.Interfaces;
+using GraphQL.Server.Ui.GraphiQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<IMenuRepository, MenuRepository>();
+builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
 
 //configure GraphQL
 builder.Services.AddTransient<MenuType>();
@@ -50,7 +54,7 @@ app.UseHttpsRedirection();
 app.UseGraphQL<ISchema>("/graphql");
 
 // GraphQL Playground UI (note: no Path property)
-app.UseGraphQLPlayground("/ui/playground", new PlaygroundOptions
+app.UseGraphQLGraphiQL("/ui/graphiql", new GraphiQLOptions
 {
     GraphQLEndPoint = "/graphql"
 });
