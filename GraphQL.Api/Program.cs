@@ -1,17 +1,17 @@
 using GraphQL;
 using GraphQL.Api.Data;
+using GraphQL.Api.Interfaces;
 using GraphQL.Api.Mutation;
 using GraphQL.Api.Query;
 using GraphQL.Api.Schema;
+using GraphQL.Api.Services;
 using GraphQL.Api.Type;
+using GraphQL.Server.Ui.GraphiQL;
 using GraphQL.Types;
 using GraphQLApi.Interfaces;
 using GraphQLApi.Services;
 using GraphQLApi.Type;
-using Microsoft.EntityFrameworkCore; 
-using GraphQL.Api.Services;
-using GraphQL.Api.Interfaces;
-using GraphQL.Server.Ui.GraphiQL;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,16 +25,24 @@ builder.Services.AddTransient<IReservationRepository, ReservationRepository>();
 
 //configure GraphQL
 builder.Services.AddTransient<MenuType>();
+builder.Services.AddTransient<CategoryType>();
+builder.Services.AddTransient<ReservationType>();
+
+
 builder.Services.AddTransient<MenuQuery>();
-builder.Services.AddTransient<MenuMutation>();
-builder.Services.AddTransient<MenuInputType>();
+builder.Services.AddTransient<CategoryQuery>();
+builder.Services.AddTransient<ReservationQuery>();
+builder.Services.AddTransient<RootQuery>();
+
+// builder.Services.AddTransient<MenuMutation>();
+// builder.Services.AddTransient<MenuInputType>();
 
 //configure sql server
 builder.Services.AddDbContext<GraphQLDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("graphQlDbConnection"));
+    options.UseSqlite(builder.Configuration.GetConnectionString("graphQlDbConnection"));
 });
-builder.Services.AddTransient<ISchema, MenuSchema>();
+builder.Services.AddTransient<ISchema, RootSchema>();
 
 //enable support for graphql
 builder.Services.AddGraphQL(options =>
@@ -62,4 +70,3 @@ app.UseGraphQLGraphiQL("/ui/graphiql", new GraphiQLOptions
 app.MapControllers();
 app.Run();
 
- 
